@@ -236,18 +236,8 @@
           <div class="absolute -inset-4 border border-accentgold/10 pointer-events-none"></div>
           <div class="absolute inset-0 bg-obsidian-light border border-obsidian-accent flex flex-col items-center justify-center p-8 overflow-hidden group shadow-2xl">
             
-            <!-- Imagem Real com Placeholder no src -->
-            <img src="[INSERIR_IMAGEM_HERO]" alt="Decante de perfume premium com gotas de essência" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 pointer-events-none">
-            
-            <!-- Placeholder Visual Temporário -->
-            <div class="absolute inset-0 bg-gradient-to-tr from-obsidian-light via-obsidian/90 to-obsidian-accent flex flex-col items-center justify-center text-center p-6 border border-accentgold-dark/20">
-              <!-- Ícone Decorativo -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-accentgold/30 mb-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-              </svg>
-              <span class="font-serif text-lg italic text-accentgold/80 mb-2">[INSERIR_IMAGEM_HERO]</span>
-              <p class="text-xs text-champagne-muted max-w-[280px]">Coloque aqui uma foto em alta definição que represente luxo, vidro, perfume decantando ou fumaça aromática.</p>
-            </div>
+            <!-- Imagem Real -->
+            <img src="images/perfume_hero.png" alt="Decante de perfume premium com gotas de essência" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 pointer-events-none">
             
             <!-- Overlay com Tag Decorativa -->
             <div class="absolute bottom-4 left-4 right-4 bg-obsidian/90 backdrop-blur-sm p-4 border border-accentgold/20 flex justify-between items-center z-20">
@@ -358,15 +348,9 @@
           <!-- CARD PRODUTO 1 -->
           <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full shadow-lg">
             <div>
-              <!-- Área da Imagem / Placeholder -->
+              <!-- Área da Imagem -->
               <div class="relative w-full aspect-[4/5] bg-obsidian-accent overflow-hidden">
-                <img src="[INSERIR_IMAGEM_PRODUTO_1]" alt="Decante de perfume Rouge N° 540" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
-                
-                <!-- Placeholder visual caso não haja imagem -->
-                <div class="absolute inset-0 bg-gradient-to-b from-obsidian/50 to-obsidian-light flex flex-col items-center justify-center text-center p-4">
-                  <span class="text-xs text-accentgold/70 font-mono tracking-wider mb-1">[INSERIR_IMAGEM_PRODUTO_1]</span>
-                  <span class="text-[10px] text-champagne-muted italic">Saffron & Amberwood</span>
-                </div>
+                <img src="images/perfume_p1.png" alt="Decante de perfume Rouge N° 540" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
 
                 <!-- Tag de Família Olfativa -->
                 <span class="absolute top-4 left-4 bg-obsidian/85 backdrop-blur-sm text-[10px] uppercase tracking-widest text-accentgold px-2.5 py-1 font-semibold border border-accentgold/25">
@@ -404,7 +388,7 @@
 
             <!-- CTA Compra -->
             <div class="px-6 pb-6 pt-2 grid grid-cols-2 gap-2">
-              <button onclick="addToCart(1, 'Rouge N° 540', 189.90, '[INSERIR_IMAGEM_PRODUTO_1]')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
+              <button onclick="addToCart(1, 'Rouge N° 540', 189.90, 'images/perfume_p1.png')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
                 + Adicionar
               </button>
               <a href="https://wa.me/5516997795333?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Rouge+N%C2%B0+540" target="_blank" rel="noopener noreferrer" class="py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 flex items-center justify-center space-x-1">
@@ -416,15 +400,9 @@
           <!-- CARD PRODUTO 2 -->
           <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full shadow-lg">
             <div>
-              <!-- Área da Imagem / Placeholder -->
+              <!-- Área da Imagem -->
               <div class="relative w-full aspect-[4/5] bg-obsidian-accent overflow-hidden">
-                <img src="[INSERIR_IMAGEM_PRODUTO_2]" alt="Decante de perfume Noir Wood" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
-                
-                <!-- Placeholder visual caso não haja imagem -->
-                <div class="absolute inset-0 bg-gradient-to-b from-obsidian/50 to-obsidian-light flex flex-col items-center justify-center text-center p-4">
-                  <span class="text-xs text-accentgold/70 font-mono tracking-wider mb-1">[INSERIR_IMAGEM_PRODUTO_2]</span>
-                  <span class="text-[10px] text-champagne-muted italic">Oud & Sandalwood</span>
-                </div>
+                <img src="images/perfume_p2.png" alt="Decante de perfume Noir Wood" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
 
                 <!-- Tag de Família Olfativa -->
                 <span class="absolute top-4 left-4 bg-obsidian/85 backdrop-blur-sm text-[10px] uppercase tracking-widest text-accentgold px-2.5 py-1 font-semibold border border-accentgold/25">
@@ -462,7 +440,7 @@
 
             <!-- CTA Compra -->
             <div class="px-6 pb-6 pt-2 grid grid-cols-2 gap-2">
-              <button onclick="addToCart(2, 'Noir Wood', 169.90, '[INSERIR_IMAGEM_PRODUTO_2]')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
+              <button onclick="addToCart(2, 'Noir Wood', 169.90, 'images/perfume_p2.png')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
                 + Adicionar
               </button>
               <a href="https://wa.me/5516997795333?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Noir+Wood" target="_blank" rel="noopener noreferrer" class="py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 flex items-center justify-center space-x-1">
@@ -474,15 +452,9 @@
           <!-- CARD PRODUTO 3 -->
           <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full shadow-lg">
             <div>
-              <!-- Área da Imagem / Placeholder -->
+              <!-- Área da Imagem -->
               <div class="relative w-full aspect-[4/5] bg-obsidian-accent overflow-hidden">
-                <img src="[INSERIR_IMAGEM_PRODUTO_3]" alt="Decante de perfume Sweet Tobacco" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
-                
-                <!-- Placeholder visual caso não haja imagem -->
-                <div class="absolute inset-0 bg-gradient-to-b from-obsidian/50 to-obsidian-light flex flex-col items-center justify-center text-center p-4">
-                  <span class="text-xs text-accentgold/70 font-mono tracking-wider mb-1">[INSERIR_IMAGEM_PRODUTO_3]</span>
-                  <span class="text-[10px] text-champagne-muted italic">Tobacco & Vanilla</span>
-                </div>
+                <img src="images/perfume_p3.png" alt="Decante de perfume Sweet Tobacco" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none">
 
                 <!-- Tag de Família Olfativa -->
                 <span class="absolute top-4 left-4 bg-obsidian/85 backdrop-blur-sm text-[10px] uppercase tracking-widest text-accentgold px-2.5 py-1 font-semibold border border-accentgold/25">
@@ -520,7 +492,7 @@
 
             <!-- CTA Compra -->
             <div class="px-6 pb-6 pt-2 grid grid-cols-2 gap-2">
-              <button onclick="addToCart(3, 'Sweet Tobacco', 179.90, '[INSERIR_IMAGEM_PRODUTO_3]')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
+              <button onclick="addToCart(3, 'Sweet Tobacco', 179.90, 'images/perfume_p3.png')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
                 + Adicionar
               </button>
               <a href="https://wa.me/5516997795333?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Sweet+Tobacco" target="_blank" rel="noopener noreferrer" class="py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 flex items-center justify-center space-x-1">
@@ -562,16 +534,7 @@
           <div class="absolute -bottom-6 -right-6 w-24 h-24 border-b-2 border-r-2 border-accentgold/30"></div>
           
           <div class="relative w-full aspect-[4/3] bg-obsidian-light overflow-hidden shadow-2xl">
-            <img src="[INSERIR_IMAGEM_HISTORIA]" alt="Frasco decantado e pipeta de alta precisão em laboratório estéril" class="absolute inset-0 w-full h-full object-cover pointer-events-none">
-            
-            <!-- Placeholder Visual Temporário -->
-            <div class="absolute inset-0 bg-gradient-to-tr from-obsidian-light via-obsidian/90 to-accentgold/10 flex flex-col items-center justify-center text-center p-6 border border-accentgold/10">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-accentgold/30 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-              </svg>
-              <span class="font-serif text-base italic text-accentgold/80 mb-1">[INSERIR_IMAGEM_HISTORIA]</span>
-              <p class="text-[11px] text-champagne-muted max-w-[320px]">Adicione uma foto mostrando o cuidado técnico, fracionamento estéril ou elegância minimalista da produção.</p>
-            </div>
+            <img src="images/perfume_history.png" alt="Frasco decantado e pipeta de alta precisão em laboratório estéril" class="absolute inset-0 w-full h-full object-cover pointer-events-none">
           </div>
         </div>
 
@@ -585,7 +548,7 @@
           
           <div class="space-y-4 text-sm text-champagne-muted font-light leading-relaxed">
             <p>
-              [INSERIR_TEXTO_HISTORIA] O blind-buy (comprar no escuro) de perfumes importados é um risco de alto custo. A pele humana reage de formas diferentes às notas químicas, e a evolução olfativa varia de acordo com o clima, transpiração e hidratação.
+              A busca pelo perfume perfeito não deve ser uma aposta às cegas. O blind-buy (comprar no escuro) de perfumes importados é um risco de alto custo. A pele humana reage de formas diferentes às notas químicas, e a evolução olfativa varia de acordo com o clima, transpiração e hidratação.
             </p>
             <p>
               A <strong>Amostra</strong> nasceu para mudar essa jornada. Nosso processo consiste em transferir rigorosamente o líquido do frasco lacrado do perfume original para mini-frascos esterilizados de vidro de 10ml, com válvula spray de alto rendimento.
@@ -1246,9 +1209,9 @@
 
     // Catálogo de Perfumes do Quiz
     const productsCatalog = {
-      'rouge': { id: 1, name: 'Rouge N° 540', price: 189.90, img: '[INSERIR_IMAGEM_PRODUTO_1]', family: 'Floral Âmbar', desc: 'Fragrância densa, ultra luxuosa e marcante. Une o açafrão ao brilho do âmbar de forma espetacular.' },
-      'wood': { id: 2, name: 'Noir Wood', price: 169.90, img: '[INSERIR_IMAGEM_PRODUTO_2]', family: 'Madeira Oriental', desc: 'Sóbrio, rico e elegante. Uma mistura marcante de oud precioso com o calor do sândalo e especiarias.' },
-      'tobacco': { id: 3, name: 'Sweet Tobacco', price: 179.90, img: '[INSERIR_IMAGEM_PRODUTO_3]', family: 'Especiado Quente', desc: 'Clássico requintado. Combina o tabaco aromático com fava tonka adocicada e toques de cacau cremoso.' }
+      'rouge': { id: 1, name: 'Rouge N° 540', price: 189.90, img: 'images/perfume_p1.png', family: 'Floral Âmbar', desc: 'Fragrância densa, ultra luxuosa e marcante. Une o açafrão ao brilho do âmbar de forma espetacular.' },
+      'wood': { id: 2, name: 'Noir Wood', price: 169.90, img: 'images/perfume_p2.png', family: 'Madeira Oriental', desc: 'Sóbrio, rico e elegante. Uma mistura marcante de oud precioso com o calor do sândalo e especiarias.' },
+      'tobacco': { id: 3, name: 'Sweet Tobacco', price: 179.90, img: 'images/perfume_p3.png', family: 'Especiado Quente', desc: 'Clássico requintado. Combina o tabaco aromático com fava tonka adocicada e toques de cacau cremoso.' }
     };
 
     // -------------------------------------------------------------
