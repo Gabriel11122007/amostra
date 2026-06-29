@@ -6,7 +6,7 @@
   
   <!-- SEO Meta Tags -->
   <title>AMOSTRA — Perfumaria de Nicho & Decantes de Luxo</title>
-  <meta name="description" content="Descubra sua próxima assinatura olfativa sem precisar investir em um frasco inteiro. Decantes 100% originais das grifes mais exclusivas do mundo.">
+  <meta name="description" content="Descubra sua próxima assinatura olfativa sem precisar comprar um frasco cheio. Decantes 100% originais fracionados com precisão. Experimente o luxo.">
   <meta name="keywords" content="decantes, amostras de perfume, perfumaria de nicho, importados, baccarat rouge, tom ford, creed aventus">
   
   <!-- Google Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Sans-serif) -->
@@ -35,7 +35,7 @@
             },
             accentgold: {
               DEFAULT: '#C5A880', // Ouro antigo - botões secundários, links e detalhes
-              light: '#E2D4C1',   // Tom dourado suave para hover
+              light: '#E2D4C1',   // Dourado suave para hover
               dark: '#9F8058'     // Dourado profundo
             },
             emeraldsuccess: {
@@ -49,8 +49,9 @@
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
           },
           boxShadow: {
-            'gold-glow': '0 0 15px rgba(197, 168, 128, 0.15)',
+            'gold-glow': '0 0 20px rgba(197, 168, 128, 0.15)',
             'green-glow': '0 4px 20px rgba(16, 63, 39, 0.4)',
+            'glass-panel': 'inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.5)'
           }
         }
       }
@@ -81,14 +82,32 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #C5A880;
     }
+    /* Efeito de fade-in sutil para modais */
+    .modal-active {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
 <body class="font-sans antialiased text-champagne selection:bg-accentgold selection:text-obsidian overflow-x-hidden">
 
   <!-- ==========================================
+       BARRA DE PROMOÇÃO & CRONÔMETRO
+       ========================================== -->
+  <div id="promo-bar" class="fixed top-0 left-0 w-full h-10 bg-accentgold text-obsidian flex items-center justify-center text-xs font-semibold uppercase tracking-wider z-50 px-4">
+    <div class="flex items-center space-x-2">
+      <span>Frete Grátis nas compras acima de R$199. Oferta expira em:</span>
+      <span id="countdown" class="font-mono bg-obsidian text-accentgold px-2 py-0.5 rounded text-xs">15:00</span>
+    </div>
+  </div>
+
+  <!-- ==========================================
        HEADER & NAVEGAÇÃO
        ========================================== -->
-  <header id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-transparent">
+  <header id="main-header" class="fixed top-10 left-0 w-full z-50 transition-all duration-300 border-b border-transparent">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       
       <!-- Brand Logo (Serif) -->
@@ -97,38 +116,54 @@
       </a>
       
       <!-- Desktop Navigation Links -->
-      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wider">
+      <nav class="hidden lg:flex items-center space-x-8 text-sm font-medium tracking-wider">
         <a href="#hero" class="hover:text-accentgold transition-colors duration-200">Início</a>
         <a href="#vitrine" class="hover:text-accentgold transition-colors duration-200">Coleções</a>
+        <a href="#simulador" class="hover:text-accentgold transition-colors duration-200">Simulador</a>
         <a href="#sobre" class="hover:text-accentgold transition-colors duration-200">O Conceito</a>
+        <a href="#piramide" class="hover:text-accentgold transition-colors duration-200">Pirâmide Notas</a>
+        <a href="#depoimentos" class="hover:text-accentgold transition-colors duration-200">Clientes</a>
         <a href="#faq" class="hover:text-accentgold transition-colors duration-200">Dúvidas</a>
       </nav>
       
-      <!-- CTA Header -->
-      <div class="hidden md:block">
-        <a href="#vitrine" class="px-5 py-2.5 border border-accentgold/30 hover:border-accentgold text-accentgold hover:text-obsidian hover:bg-accentgold text-xs font-semibold uppercase tracking-widest rounded-none transition-all duration-300">
-          Explorar Amostras
-        </a>
-      </div>
+      <!-- CTA & Cart Icons -->
+      <div class="flex items-center space-x-4">
+        <!-- Botão Quiz -->
+        <button onclick="openQuiz()" class="hidden sm:inline-flex items-center px-4 py-2 border border-accentgold text-accentgold hover:bg-accentgold hover:text-obsidian text-xs font-semibold uppercase tracking-widest transition-all duration-300">
+          Descobrir Perfume Ideal
+        </button>
 
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 text-champagne focus:outline-none" aria-label="Abrir Menu">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
+        <!-- Botão Carrinho -->
+        <button onclick="toggleCart(true)" class="relative p-2.5 bg-obsidian-light border border-obsidian-accent hover:border-accentgold text-champagne hover:text-accentgold transition-colors duration-200" aria-label="Abrir sacola de compras">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <!-- Badge de Contagem do Carrinho -->
+          <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-accentgold text-obsidian font-sans font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border border-obsidian hidden">0</span>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 text-champagne focus:outline-none" aria-label="Abrir Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
 
     </div>
 
     <!-- Mobile Navigation Drawer -->
-    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-obsidian border-b border-obsidian-accent px-6 py-8 flex flex-col space-y-6 text-center text-lg font-medium tracking-wide shadow-xl transition-all duration-300">
+    <div id="mobile-menu" class="hidden lg:hidden absolute top-20 left-0 w-full bg-obsidian border-b border-obsidian-accent px-6 py-8 flex flex-col space-y-6 text-center text-lg font-medium tracking-wide shadow-xl transition-all duration-300">
       <a href="#hero" class="hover:text-accentgold transition-colors duration-200 py-2">Início</a>
       <a href="#vitrine" class="hover:text-accentgold transition-colors duration-200 py-2">Coleções</a>
+      <a href="#simulador" class="hover:text-accentgold transition-colors duration-200 py-2">Simulador</a>
       <a href="#sobre" class="hover:text-accentgold transition-colors duration-200 py-2">O Conceito</a>
+      <a href="#piramide" class="hover:text-accentgold transition-colors duration-200 py-2">Pirâmide Notas</a>
+      <a href="#depoimentos" class="hover:text-accentgold transition-colors duration-200 py-2">Clientes</a>
       <a href="#faq" class="hover:text-accentgold transition-colors duration-200 py-2">Dúvidas</a>
-      <a href="#vitrine" class="px-6 py-3 border border-accentgold text-accentgold hover:bg-accentgold hover:text-obsidian text-sm font-semibold uppercase tracking-widest transition-all duration-300">
-        Ver Decantes
-      </a>
+      <button onclick="openQuiz(); document.getElementById('mobile-menu').classList.add('hidden');" class="px-6 py-3 border border-accentgold text-accentgold hover:bg-accentgold hover:text-obsidian text-sm font-semibold uppercase tracking-widest transition-all duration-300">
+        Descobrir Perfume Ideal
+      </button>
     </div>
   </header>
 
@@ -137,7 +172,7 @@
     <!-- ==========================================
          HERO SECTION
          ========================================== -->
-    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-hidden">
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-32 pb-12 overflow-hidden">
       <!-- Background sutil com overlay -->
       <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-gradient-to-b from-obsidian/40 via-obsidian to-obsidian z-10"></div>
@@ -170,10 +205,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </a>
-            <!-- CTA Secundário (Saiba Mais) -->
-            <a href="#sobre" class="px-8 py-4 border border-champagne/20 hover:border-accentgold text-champagne hover:text-accentgold text-center font-semibold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center">
-              <span>Como Funciona</span>
-            </a>
+            <!-- CTA Secundário (Quiz) -->
+            <button onclick="openQuiz()" class="px-8 py-4 border border-champagne/20 hover:border-accentgold text-champagne hover:text-accentgold text-center font-semibold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center">
+              <span>Encontrar Perfume Ideal</span>
+            </button>
           </div>
 
           <!-- Badges de Confiança -->
@@ -202,7 +237,7 @@
             <!-- Imagem Real com Placeholder no src -->
             <img src="[INSERIR_IMAGEM_HERO]" alt="Decante de perfume premium com gotas de essência" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 pointer-events-none">
             
-            <!-- Placeholder Visual Temporário (caso a imagem não esteja configurada) -->
+            <!-- Placeholder Visual Temporário -->
             <div class="absolute inset-0 bg-gradient-to-tr from-obsidian-light via-obsidian/90 to-obsidian-accent flex flex-col items-center justify-center text-center p-6 border border-accentgold-dark/20">
               <!-- Ícone Decorativo -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-accentgold/30 mb-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -221,6 +256,79 @@
               <span class="text-xs font-semibold px-2 py-1 bg-accentgold/15 text-accentgold">Edição Especial</span>
             </div>
           </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SIMULADOR DE ECONOMIA (CALCULADORA INTERATIVA)
+         ========================================== -->
+    <section id="simulador" class="py-24 bg-obsidian border-t border-obsidian-accent relative overflow-hidden">
+      <!-- Fundo Decorativo -->
+      <div class="absolute top-0 left-0 w-80 h-80 bg-accentgold/5 rounded-full blur-[80px] pointer-events-none"></div>
+      
+      <div class="max-w-5xl mx-auto px-6 relative z-10">
+        
+        <!-- Cabeçalho -->
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+          <p class="text-xs uppercase tracking-widest text-accentgold font-semibold">Simulador de Decantes</p>
+          <h2 class="font-serif text-3xl sm:text-4xl font-normal text-champagne">Calcule Sua Economia Olfativa</h2>
+          <div class="w-12 h-[1px] bg-accentgold mx-auto my-3"></div>
+          <p class="text-sm text-champagne-muted font-light">
+            Compare o investimento necessário para comprar frascos de marca lacrados versus comprar a mesma variedade em amostras/decantes de 10ml.
+          </p>
+        </div>
+
+        <!-- Calculadora de Sliders -->
+        <div class="bg-obsidian-light border border-obsidian-accent p-8 rounded-none md:p-12 shadow-glass-panel grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          
+          <!-- Lado do Controle Slider -->
+          <div class="space-y-6">
+            <h3 class="font-serif text-xl text-champagne">Quantas fragrâncias você gostaria de testar e usar no ano?</h3>
+            <p class="text-xs text-champagne-muted font-light leading-relaxed">
+              Mova o seletor abaixo para estimar a quantidade de perfumes de nicho importados que fariam parte do seu closet olfativo ideal.
+            </p>
+            
+            <div class="space-y-4 pt-4">
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-semibold text-accentgold">Quantidade de Perfumes:</span>
+                <span id="slider-val" class="font-serif text-2xl font-bold text-champagne bg-obsidian-accent px-4 py-1 border border-accentgold/20">3</span>
+              </div>
+              <input id="perfume-slider" type="range" min="1" max="10" value="3" class="w-full h-1 bg-obsidian-accent accent-accentgold rounded-lg appearance-none cursor-pointer">
+              <div class="flex justify-between text-[10px] text-champagne-muted uppercase tracking-wider">
+                <span>1 Perfume</span>
+                <span>10 Perfumes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lado da Exibição Financeira -->
+          <div class="space-y-6 border-t md:border-t-0 md:border-l border-obsidian-accent pt-8 md:pt-0 md:pl-12 flex flex-col justify-center">
+            
+            <!-- Custo em Frascos Grandes -->
+            <div>
+              <p class="text-xs text-champagne-muted uppercase tracking-widest">Custo Estimado em Frascos Grandes (75ml+)</p>
+              <p id="cost-bottles" class="font-serif text-2xl text-red-500 font-semibold mt-1">R$ 7.500,00</p>
+              <p class="text-[10px] text-champagne-muted mt-0.5">*Considerando valor médio de R$2.500 por perfume.</p>
+            </div>
+
+            <!-- Custo em Amostras -->
+            <div>
+              <p class="text-xs text-champagne-muted uppercase tracking-widest">Custo Equivalente em Amostras (10ml)</p>
+              <p id="cost-samples" class="font-serif text-2xl text-emeraldsuccess-light font-semibold mt-1">R$ 539,70</p>
+              <p class="text-[10px] text-champagne-muted mt-0.5">*Considerando valor médio de R$179 por amostra.</p>
+            </div>
+
+            <!-- Total Economizado -->
+            <div class="pt-4 border-t border-obsidian-accent">
+              <p class="text-xs text-accentgold uppercase tracking-widest font-semibold">Sua Economia Real Estimada</p>
+              <p id="cost-saved" class="font-serif text-4xl text-accentgold font-bold mt-1">R$ 6.960,30</p>
+              <p class="text-xs text-champagne-muted font-light mt-1">Compre variedade, crie personalidade, compre inteligente.</p>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -246,7 +354,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
 
           <!-- CARD PRODUTO 1 -->
-          <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full">
+          <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full shadow-lg">
             <div>
               <!-- Área da Imagem / Placeholder -->
               <div class="relative w-full aspect-[4/5] bg-obsidian-accent overflow-hidden">
@@ -282,7 +390,7 @@
                 <div class="bg-obsidian-light p-3 space-y-1.5 border border-obsidian-accent">
                   <div class="flex justify-between text-[11px] text-champagne-muted">
                     <span>Frasco 70ml</span>
-                    <span class="line-through">R$ 2.800</span>
+                    <span class="line-through">R$ 2.800,00</span>
                   </div>
                   <div class="flex justify-between text-xs font-semibold text-champagne">
                     <span>Decant Amostra (10ml)</span>
@@ -293,15 +401,18 @@
             </div>
 
             <!-- CTA Compra -->
-            <div class="px-6 pb-6 pt-2">
-              <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Rouge+N%C2%B0+540" target="_blank" rel="noopener noreferrer" class="w-full py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-2">
-                <span>Adquirir Amostra</span>
+            <div class="px-6 pb-6 pt-2 grid grid-cols-2 gap-2">
+              <button onclick="addToCart(1, 'Rouge N° 540', 189.90, '[INSERIR_IMAGEM_PRODUTO_1]')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
+                + Adicionar
+              </button>
+              <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Rouge+N%C2%B0+540" target="_blank" rel="noopener noreferrer" class="py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 flex items-center justify-center space-x-1">
+                <span>Comprar</span>
               </a>
             </div>
           </article>
 
           <!-- CARD PRODUTO 2 -->
-          <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full">
+          <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full shadow-lg">
             <div>
               <!-- Área da Imagem / Placeholder -->
               <div class="relative w-full aspect-[4/5] bg-obsidian-accent overflow-hidden">
@@ -337,7 +448,7 @@
                 <div class="bg-obsidian-light p-3 space-y-1.5 border border-obsidian-accent">
                   <div class="flex justify-between text-[11px] text-champagne-muted">
                     <span>Frasco 50ml</span>
-                    <span class="line-through">R$ 2.400</span>
+                    <span class="line-through">R$ 2.400,00</span>
                   </div>
                   <div class="flex justify-between text-xs font-semibold text-champagne">
                     <span>Decant Amostra (10ml)</span>
@@ -348,15 +459,18 @@
             </div>
 
             <!-- CTA Compra -->
-            <div class="px-6 pb-6 pt-2">
-              <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Noir+Wood" target="_blank" rel="noopener noreferrer" class="w-full py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-2">
-                <span>Adquirir Amostra</span>
+            <div class="px-6 pb-6 pt-2 grid grid-cols-2 gap-2">
+              <button onclick="addToCart(2, 'Noir Wood', 169.90, '[INSERIR_IMAGEM_PRODUTO_2]')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
+                + Adicionar
+              </button>
+              <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Noir+Wood" target="_blank" rel="noopener noreferrer" class="py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 flex items-center justify-center space-x-1">
+                <span>Comprar</span>
               </a>
             </div>
           </article>
 
           <!-- CARD PRODUTO 3 -->
-          <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full">
+          <article class="bg-obsidian border border-obsidian-accent group hover:border-accentgold/30 transition-all duration-300 flex flex-col justify-between h-full shadow-lg">
             <div>
               <!-- Área da Imagem / Placeholder -->
               <div class="relative w-full aspect-[4/5] bg-obsidian-accent overflow-hidden">
@@ -392,7 +506,7 @@
                 <div class="bg-obsidian-light p-3 space-y-1.5 border border-obsidian-accent">
                   <div class="flex justify-between text-[11px] text-champagne-muted">
                     <span>Frasco 50ml</span>
-                    <span class="line-through">R$ 2.500</span>
+                    <span class="line-through">R$ 2.500,00</span>
                   </div>
                   <div class="flex justify-between text-xs font-semibold text-champagne">
                     <span>Decant Amostra (10ml)</span>
@@ -403,9 +517,12 @@
             </div>
 
             <!-- CTA Compra -->
-            <div class="px-6 pb-6 pt-2">
-              <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Sweet+Tobacco" target="_blank" rel="noopener noreferrer" class="w-full py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-2">
-                <span>Adquirir Amostra</span>
+            <div class="px-6 pb-6 pt-2 grid grid-cols-2 gap-2">
+              <button onclick="addToCart(3, 'Sweet Tobacco', 179.90, '[INSERIR_IMAGEM_PRODUTO_3]')" class="py-3 border border-accentgold/40 text-accentgold hover:bg-accentgold hover:text-obsidian text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300">
+                + Adicionar
+              </button>
+              <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+pedir+a+Amostra+Sweet+Tobacco" target="_blank" rel="noopener noreferrer" class="py-3 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-[10px] transition-all duration-300 flex items-center justify-center space-x-1">
+                <span>Comprar</span>
               </a>
             </div>
           </article>
@@ -491,6 +608,173 @@
               <span><strong>Fácil Transporte:</strong> Leve na bolsa de mão, viagens ou closet do escritório.</span>
             </li>
           </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         PIRÂMIDE OLFATIVA INTERATIVA
+         ========================================== -->
+    <section id="piramide" class="py-24 bg-obsidian-light border-y border-obsidian-accent">
+      <div class="max-w-4xl mx-auto px-6">
+        
+        <!-- Cabeçalho -->
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+          <p class="text-xs uppercase tracking-widest text-accentgold font-semibold">Guia Olfativo</p>
+          <h2 class="font-serif text-3xl font-normal text-champagne">A Anatomia do Aroma</h2>
+          <div class="w-12 h-[1px] bg-accentgold mx-auto my-3"></div>
+          <p class="text-sm text-champagne-muted font-light leading-relaxed">
+            Entenda como a fragrância se comporta na pele ao longo do tempo. Selecione uma das camadas para ver os ingredientes e a duração na pele.
+          </p>
+        </div>
+
+        <!-- Estrutura Piramidal Interativa -->
+        <div class="space-y-4">
+          
+          <!-- Camada 1: Notas de Topo -->
+          <div onclick="selectPyramidLayer('topo')" id="layer-topo" class="pyramid-layer cursor-pointer border border-accentgold/35 bg-obsidian p-6 hover:bg-obsidian-accent/50 transition-all duration-300 rounded-none relative overflow-hidden group">
+            <div class="absolute left-0 top-0 h-full w-2 bg-accentgold"></div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-[10px] text-accentgold uppercase tracking-widest font-semibold">1º Estágio (0 a 30 minutos)</span>
+                <h3 class="font-serif text-lg text-champagne mt-0.5">Notas de Topo / Saída</h3>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accentgold transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            
+            <div id="desc-topo" class="mt-4 pt-4 border-t border-obsidian-accent text-xs text-champagne-muted leading-relaxed font-light space-y-2 hidden">
+              <p>São as primeiras notas percebidas ao borrifar o perfume. Evaporam rapidamente, proporcionando a primeira impressão olfativa.</p>
+              <p><strong class="text-accentgold">Ingredientes Comuns:</strong> Limão, Bergamota, Laranja, Alecrim, Lavanda, Manjericão.</p>
+            </div>
+          </div>
+
+          <!-- Camada 2: Notas de Coração -->
+          <div onclick="selectPyramidLayer('coracao')" id="layer-coracao" class="pyramid-layer cursor-pointer border border-obsidian-accent bg-obsidian p-6 hover:bg-obsidian-accent/50 transition-all duration-300 rounded-none relative overflow-hidden group">
+            <div class="absolute left-0 top-0 h-full w-2 bg-transparent transition-colors duration-300"></div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-[10px] text-accentgold/80 uppercase tracking-widest font-semibold">2º Estágio (30min a 4 horas)</span>
+                <h3 class="font-serif text-lg text-champagne mt-0.5">Notas de Coração / Corpo</h3>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accentgold transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            
+            <div id="desc-coracao" class="mt-4 pt-4 border-t border-obsidian-accent text-xs text-champagne-muted leading-relaxed font-light space-y-2 hidden">
+              <p>Considerada a "alma" da fragrância, essa camada se desenvolve quando as notas de topo começam a evaporar. Determina a personalidade do perfume.</p>
+              <p><strong class="text-accentgold">Ingredientes Comuns:</strong> Rosa, Jasmim, Lírio, Canela, Pimenta Preta, Noz-moscada, Cardamomo.</p>
+            </div>
+          </div>
+
+          <!-- Camada 3: Notas de Fundo -->
+          <div onclick="selectPyramidLayer('fundo')" id="layer-fundo" class="pyramid-layer cursor-pointer border border-obsidian-accent bg-obsidian p-6 hover:bg-obsidian-accent/50 transition-all duration-300 rounded-none relative overflow-hidden group">
+            <div class="absolute left-0 top-0 h-full w-2 bg-transparent transition-colors duration-300"></div>
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-[10px] text-accentgold/80 uppercase tracking-widest font-semibold">3º Estágio (4 a 8+ horas)</span>
+                <h3 class="font-serif text-lg text-champagne mt-0.5">Notas de Fundo / Fixação</h3>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accentgold transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            
+            <div id="desc-fundo" class="mt-4 pt-4 border-t border-obsidian-accent text-xs text-champagne-muted leading-relaxed font-light space-y-2 hidden">
+              <p>São as notas mais pesadas e de menor volatilidade. Dão suporte ao perfume e garantem o poder de fixação prolongada na pele e tecidos.</p>
+              <p><strong class="text-accentgold">Ingredientes Comuns:</strong> Sândalo, Baunilha, Musk (Almíscar), Oud, Âmbar, Patchouli, Cedro.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         CARROSSEL DE DEPOIMENTOS
+         ========================================== -->
+    <section id="depoimentos" class="py-24 bg-obsidian">
+      <div class="max-w-5xl mx-auto px-6">
+        
+        <!-- Cabeçalho -->
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+          <p class="text-xs uppercase tracking-widest text-accentgold font-semibold">Feedback De Quem Usa</p>
+          <h2 class="font-serif text-3xl font-normal text-champagne">Opinião de Nossos Clientes</h2>
+          <div class="w-12 h-[1px] bg-accentgold mx-auto my-3"></div>
+        </div>
+
+        <!-- Carrossel Wrapper -->
+        <div class="relative bg-obsidian-light border border-obsidian-accent p-8 md:p-12 shadow-glass-panel overflow-hidden">
+          
+          <!-- Slides -->
+          <div class="relative min-h-[160px]">
+            
+            <!-- Slide 1 -->
+            <div id="slide-0" class="testimonial-slide transition-opacity duration-500 space-y-4">
+              <div class="flex items-center space-x-1 text-accentgold">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+              <p class="font-serif text-lg md:text-xl italic text-champagne-muted font-light leading-relaxed">
+                "Comprar decantes na AMOSTRA foi a melhor decisão. Pude testar o Baccarat Rouge 540 por duas semanas e perceber que, embora seja incrível, o Noir Wood combina muito mais com o meu estilo de dia a dia no escritório. Economizei uma fortuna!"
+              </p>
+              <div class="pt-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-champagne">Felipe Albuquerque</p>
+                <p class="text-[10px] text-accentgold uppercase tracking-widest mt-0.5">São Paulo - SP</p>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div id="slide-1" class="testimonial-slide transition-opacity duration-500 space-y-4 hidden opacity-0">
+              <div class="flex items-center space-x-1 text-accentgold">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+              <p class="font-serif text-lg md:text-xl italic text-champagne-muted font-light leading-relaxed">
+                "Excelente apresentação. Os decantes chegam perfeitamente vedados, etiquetados com a data do fracionamento e o spray borrifa uma névoa fina excelente que não desperdiça o perfume. Atendimento de altíssimo nível no WhatsApp!"
+              </p>
+              <div class="pt-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-champagne">Mariana G. Castilho</p>
+                <p class="text-[10px] text-accentgold uppercase tracking-widest mt-0.5">Curitiba - PR</p>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div id="slide-2" class="testimonial-slide transition-opacity duration-500 space-y-4 hidden opacity-0">
+              <div class="flex items-center space-x-1 text-accentgold">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              </div>
+              <p class="font-serif text-lg md:text-xl italic text-champagne-muted font-light leading-relaxed">
+                "Antes de viajar comprei 4 amostras diferentes para ver como reagiam no calor. O Sweet Tobacco fixou mais de 10 horas na minha pele! É incrível a facilidade de levar os vidrinhos na necessaire de viagem."
+              </p>
+              <div class="pt-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-champagne">Lucas Peixoto</p>
+                <p class="text-[10px] text-accentgold uppercase tracking-widest mt-0.5">Porto Alegre - RS</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Controles do Carrossel -->
+          <div class="flex justify-between items-center pt-8 border-t border-obsidian-accent mt-8">
+            <div class="flex space-x-2">
+              <button onclick="prevSlide()" class="p-2 border border-accentgold/35 hover:border-accentgold text-accentgold hover:bg-accentgold hover:text-obsidian transition-colors duration-200" aria-label="Depoimento Anterior">
+                ←
+              </button>
+              <button onclick="nextSlide()" class="p-2 border border-accentgold/35 hover:border-accentgold text-accentgold hover:bg-accentgold hover:text-obsidian transition-colors duration-200" aria-label="Próximo Depoimento">
+                →
+              </button>
+            </div>
+            <!-- Bullets de Navegação -->
+            <div class="flex space-x-2">
+              <span id="bullet-0" class="w-1.5 h-1.5 rounded-full bg-accentgold transition-colors duration-300"></span>
+              <span id="bullet-1" class="w-1.5 h-1.5 rounded-full bg-accentgold/30 transition-colors duration-300"></span>
+              <span id="bullet-2" class="w-1.5 h-1.5 rounded-full bg-accentgold/30 transition-colors duration-300"></span>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -665,7 +949,7 @@
   <!-- ==========================================
        WHATSAPP CONTATO FLUTUANTE
        ========================================== -->
-  <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+saber+mais+sobre+as+amostras+de+perfumes" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 p-4 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne rounded-full shadow-green-glow transition-all duration-300 hover:scale-110 focus:outline-none flex items-center justify-center group" aria-label="Fale conosco no WhatsApp">
+  <a href="https://wa.me/5599999999999?text=Ol%C3%A1%21+Gostaria+de+saber+mais+sobre+as+amostras+de+perfumes" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-40 p-4 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne rounded-full shadow-green-glow transition-all duration-300 hover:scale-110 focus:outline-none flex items-center justify-center group" aria-label="Fale conosco no WhatsApp">
     <!-- Ícone de Telefone / Conversa (SVG) -->
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:rotate-12 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -677,47 +961,300 @@
   </a>
 
   <!-- ==========================================
-       VANILLA JAVASCRIPT
+       CART DRAWER (SACOLA DE COMPRAS LATERAL)
+       ========================================== -->
+  <!-- Background Overlay do Carrinho -->
+  <div id="cart-overlay" onclick="toggleCart(false)" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[55] hidden transition-all duration-300"></div>
+  
+  <!-- Slider Drawer do Carrinho -->
+  <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-obsidian-light z-[60] border-l border-obsidian-accent shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    
+    <!-- Cabeçalho do Carrinho -->
+    <div class="p-6 border-b border-obsidian-accent flex justify-between items-center bg-obsidian">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accentgold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <h3 class="font-serif text-lg text-champagne">Sua Sacola de Amostras</h3>
+      </div>
+      <button onclick="toggleCart(false)" class="text-champagne-muted hover:text-accentgold text-sm uppercase tracking-widest font-semibold p-2">
+        Fechar ✕
+      </button>
+    </div>
+
+    <!-- Lista de Itens (Scrollable) -->
+    <div id="cart-items-container" class="flex-1 p-6 overflow-y-auto space-y-4">
+      <!-- Exemplo de item (Injetado dinamicamente) -->
+      <div class="text-center py-12 text-champagne-muted font-light space-y-3">
+        <p>Sua sacola de decantes está vazia.</p>
+        <button onclick="toggleCart(false)" class="text-xs text-accentgold underline uppercase tracking-wider font-semibold">Explorar Coleção</button>
+      </div>
+    </div>
+
+    <!-- Resumo de Valores & Botão WhatsApp -->
+    <div class="p-6 border-t border-obsidian-accent bg-obsidian space-y-4">
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs text-champagne-muted">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">R$ 0,00</span>
+        </div>
+        <div class="flex justify-between text-xs text-champagne-muted">
+          <span>Frete</span>
+          <span id="cart-shipping" class="text-accentgold">Calculando...</span>
+        </div>
+        <div class="flex justify-between text-sm font-semibold text-champagne pt-2 border-t border-obsidian-accent/30">
+          <span>Total Geral</span>
+          <span id="cart-total" class="text-accentgold text-lg">R$ 0,00</span>
+        </div>
+      </div>
+
+      <button onclick="checkoutWhatsApp()" class="w-full py-4 bg-emeraldsuccess hover:bg-emeraldsuccess-light text-champagne text-center font-semibold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-2 shadow-green-glow">
+        <span>Enviar Pedido via WhatsApp</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+      <p class="text-[10px] text-center text-champagne-muted font-light">Ao clicar, geraremos o resumo com o total das amostras para finalizar no atendimento exclusivo.</p>
+    </div>
+
+  </div>
+
+  <!-- ==========================================
+       QUIZ OLFATIVO MODAL (FINDER DE PERFUME)
+       ========================================== -->
+  <div id="quiz-modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/85 backdrop-blur-md px-4">
+    <div class="w-full max-w-xl bg-obsidian border border-accentgold/30 p-8 md:p-10 shadow-glass-panel relative flex flex-col justify-between modal-active">
+      
+      <!-- Fechar Modal -->
+      <button onclick="closeQuiz()" class="absolute top-4 right-4 text-champagne-muted hover:text-accentgold p-2 text-sm">
+        ✕ Fechar
+      </button>
+
+      <!-- Barra de Progresso do Quiz -->
+      <div class="w-full bg-obsidian-light h-1 mb-8 overflow-hidden">
+        <div id="quiz-progress" class="bg-accentgold h-full w-1/3 transition-all duration-350"></div>
+      </div>
+
+      <!-- Etapas do Quiz -->
+      <div id="quiz-step-container">
+        
+        <!-- STEP 1: OCASIÃO -->
+        <div id="quiz-step-1" class="space-y-6">
+          <div class="space-y-2">
+            <span class="text-[10px] uppercase tracking-widest text-accentgold font-semibold">Passo 1 de 3</span>
+            <h3 class="font-serif text-2xl text-champagne">Onde você planeja usar mais essa fragrância?</h3>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button onclick="selectQuizAnswer(1, 'dia-a-dia')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-left text-sm text-champagne hover:text-accentgold transition-all duration-200">
+              ☀️ Dia a dia / Trabalho casual
+            </button>
+            <button onclick="selectQuizAnswer(1, 'encontro')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-left text-sm text-champagne hover:text-accentgold transition-all duration-200">
+              🕯️ Encontros românticos / Noite
+            </button>
+            <button onclick="selectQuizAnswer(1, 'negocios')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-left text-sm text-champagne hover:text-accentgold transition-all duration-200">
+              💼 Reuniões formais / Negócios
+            </button>
+            <button onclick="selectQuizAnswer(1, 'balada')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-left text-sm text-champagne hover:text-accentgold transition-all duration-200">
+              🥂 Festas / Baladas marcantes
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: INTENSIDADE -->
+        <div id="quiz-step-2" class="space-y-6 hidden">
+          <div class="space-y-2">
+            <span class="text-[10px] uppercase tracking-widest text-accentgold font-semibold">Passo 2 de 3</span>
+            <h3 class="font-serif text-2xl text-champagne">Qual intensidade você prefere na sua pele?</h3>
+          </div>
+          <div class="grid grid-cols-1 gap-4">
+            <button onclick="selectQuizAnswer(2, 'suave')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-left text-sm text-champagne hover:text-accentgold transition-all duration-200 flex justify-between items-center">
+              <span>🍃 Suave e Fresco (Projeção discreta, sensação limpa)</span>
+              <span>→</span>
+            </button>
+            <button onclick="selectQuizAnswer(2, 'moderado')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-left text-sm text-champagne hover:text-accentgold transition-all duration-200 flex justify-between items-center">
+              <span>✨ Moderado e Versátil (Equilíbrio entre presença e sutileza)</span>
+              <span>→</span>
+            </button>
+            <button onclick="selectQuizAnswer(2, 'intenso')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-left text-sm text-champagne hover:text-accentgold transition-all duration-200 flex justify-between items-center">
+              <span>🔥 Intenso e Opulento (Deixa rastro, alta projeção e fixação)</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: PREFERÊNCIA OLFATIVA -->
+        <div id="quiz-step-3" class="space-y-6 hidden">
+          <div class="space-y-2">
+            <span class="text-[10px] uppercase tracking-widest text-accentgold font-semibold">Passo 3 de 3</span>
+            <h3 class="font-serif text-2xl text-champagne">Quais tipos de aromas mais agradam seu olfato?</h3>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <button onclick="selectQuizAnswer(3, 'citrico')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-center text-sm text-champagne hover:text-accentgold transition-all duration-200 flex flex-col justify-center items-center h-28 space-y-2">
+              <span class="text-2xl">🍋</span>
+              <span class="font-semibold uppercase tracking-wider text-[10px]">Cítricos / Verdes</span>
+            </button>
+            <button onclick="selectQuizAnswer(3, 'doce')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-center text-sm text-champagne hover:text-accentgold transition-all duration-200 flex flex-col justify-center items-center h-28 space-y-2">
+              <span class="text-2xl">🍯</span>
+              <span class="font-semibold uppercase tracking-wider text-[10px]">Doces / Adocicados</span>
+            </button>
+            <button onclick="selectQuizAnswer(3, 'madeira')" class="p-4 border border-obsidian-accent hover:border-accentgold bg-obsidian-light text-center text-sm text-champagne hover:text-accentgold transition-all duration-200 flex flex-col justify-center items-center h-28 space-y-2">
+              <span class="text-2xl">🌲</span>
+              <span class="font-semibold uppercase tracking-wider text-[10px]">Amadeirados / Especiados</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4: RESULTADO -->
+        <div id="quiz-result" class="space-y-6 hidden">
+          <div class="text-center space-y-2">
+            <span class="text-[10px] uppercase tracking-widest text-accentgold font-semibold">Resultado do Seu Perfil</span>
+            <h3 class="font-serif text-2xl text-champagne">Seu Par Perfeito Encontrado!</h3>
+          </div>
+          
+          <div class="bg-obsidian-light border border-accentgold/20 p-6 flex flex-col sm:flex-row items-center gap-6">
+            <div class="w-24 h-24 bg-obsidian-accent border border-obsidian-accent flex items-center justify-center text-center p-2 rounded-none relative overflow-hidden">
+              <span id="quiz-result-img" class="text-[9px] text-accentgold font-mono break-all">[IMAGEM]</span>
+            </div>
+            <div class="space-y-2 text-center sm:text-left flex-1">
+              <h4 id="quiz-result-title" class="font-serif text-xl text-accentgold">Rouge N° 540</h4>
+              <p id="quiz-result-desc" class="text-xs text-champagne-muted font-light leading-relaxed">
+                Um perfume de extrema elegância, ideal para ocasiões em que você quer marcar presença e deixar rastro olfativo.
+              </p>
+              <div class="flex items-center space-x-2 pt-1 justify-center sm:justify-start">
+                <span class="text-[10px] text-champagne bg-accentgold/15 px-2 py-0.5 uppercase font-semibold border border-accentgold/20" id="quiz-result-family">Floral Âmbar</span>
+                <span class="text-xs font-bold text-champagne" id="quiz-result-price">R$ 189,90</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3 pt-2">
+            <button id="quiz-add-btn" class="flex-1 py-4 bg-accentgold hover:bg-accentgold-light text-obsidian font-semibold uppercase tracking-widest text-xs transition-all duration-300 text-center">
+              Adicionar Amostra à Sacola
+            </button>
+            <button onclick="resetQuiz()" class="py-4 px-6 border border-champagne/20 hover:border-accentgold text-champagne hover:text-accentgold font-semibold uppercase tracking-widest text-xs transition-all duration-300">
+              Refazer Quiz
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================
+       POPUP DE CAPTURA / DESCONTO (EXIT-INTENT / TIME)
+       ========================================== -->
+  <div id="discount-modal" class="fixed inset-0 z-[65] hidden items-center justify-center bg-black/85 backdrop-blur-sm px-4">
+    <div class="w-full max-w-md bg-obsidian border border-accentgold/40 p-8 md:p-10 shadow-glass-panel relative flex flex-col items-center text-center modal-active">
+      
+      <button onclick="closeDiscountModal()" class="absolute top-4 right-4 text-champagne-muted hover:text-accentgold text-sm p-2">
+        ✕ Fechar
+      </button>
+
+      <!-- Badge Decorativo -->
+      <span class="text-[10px] uppercase tracking-widest text-accentgold font-bold border border-accentgold/30 px-3 py-1 bg-accentgold/5 mb-6">Presente Olfativo Especial</span>
+      
+      <h3 class="font-serif text-3xl font-normal text-champagne mb-3">Espere! Não Vá de Pele Vazia</h3>
+      
+      <p class="text-xs text-champagne-muted font-light leading-relaxed mb-6 max-w-[280px]">
+        Garante um desconto exclusivo de **10% OFF** na sua primeira amostra com o cupom abaixo:
+      </p>
+
+      <!-- Código do Cupom com Destaque -->
+      <div class="w-full py-4 bg-obsidian-light border border-dashed border-accentgold/40 font-mono text-lg font-bold text-accentgold tracking-widest select-all mb-6">
+        AMOSTRA10
+      </div>
+
+      <button onclick="applyDiscountCoupon()" class="w-full py-4 bg-accentgold hover:bg-accentgold-light text-obsidian font-semibold uppercase tracking-widest text-xs transition-all duration-300 mb-4 shadow-gold-glow">
+        Copiar Cupom & Ver Vitrine
+      </button>
+
+      <p class="text-[10px] text-champagne-muted">Aproveite! Válido apenas para compras realizadas nas próximas 24 horas.</p>
+
+    </div>
+  </div>
+
+  <!-- ==========================================
+       TOAST DE PROVA SOCIAL (RECENT PURCHASES)
+       ========================================== -->
+  <div id="toast-container" class="fixed bottom-24 left-6 z-40 bg-obsidian border border-accentgold/20 p-4 shadow-glass-panel flex items-center space-x-4 max-w-xs transition-all duration-500 transform translate-y-12 opacity-0 pointer-events-none">
+    
+    <!-- Ícone de sacola ou foto do produto -->
+    <div class="w-12 h-12 bg-obsidian-light flex items-center justify-center border border-obsidian-accent rounded-none shrink-0 overflow-hidden">
+      <span class="text-xs text-accentgold font-serif">🧴</span>
+    </div>
+    
+    <!-- Mensagem -->
+    <div class="flex-1 min-w-0">
+      <p id="toast-text" class="text-xs text-champagne font-light leading-snug">
+        <strong>Fernanda de Curitiba</strong> comprou a amostra <strong>Rouge N° 540 (10ml)</strong>
+      </p>
+      <span class="text-[9px] text-accentgold uppercase tracking-wider font-semibold mt-0.5 block">Há 4 minutos</span>
+    </div>
+
+    <!-- Fechar Toast -->
+    <button onclick="hideToast()" class="text-champagne-muted hover:text-accentgold text-xs shrink-0 self-start p-1" aria-label="Fechar notificação">
+      ✕
+    </button>
+  </div>
+
+  <!-- ==========================================
+       VANILLA JAVASCRIPT & ESTADOS
        ========================================== -->
   <script>
+    // -------------------------------------------------------------
+    // ESTADOS GLOBAIS DA APLICAÇÃO
+    // -------------------------------------------------------------
+    let cart = [];
+    let currentQuizStep = 1;
+    let quizAnswers = {};
+    let currentTestimonialIndex = 0;
+    const totalTestimonials = 3;
+
+    // Catálogo de Perfumes do Quiz
+    const productsCatalog = {
+      'rouge': { id: 1, name: 'Rouge N° 540', price: 189.90, img: '[INSERIR_IMAGEM_PRODUTO_1]', family: 'Floral Âmbar', desc: 'Fragrância densa, ultra luxuosa e marcante. Une o açafrão ao brilho do âmbar de forma espetacular.' },
+      'wood': { id: 2, name: 'Noir Wood', price: 169.90, img: '[INSERIR_IMAGEM_PRODUTO_2]', family: 'Madeira Oriental', desc: 'Sóbrio, rico e elegante. Uma mistura marcante de oud precioso com o calor do sândalo e especiarias.' },
+      'tobacco': { id: 3, name: 'Sweet Tobacco', price: 179.90, img: '[INSERIR_IMAGEM_PRODUTO_3]', family: 'Especiado Quente', desc: 'Clássico requintado. Combina o tabaco aromático com fava tonka adocicada e toques de cacau cremoso.' }
+    };
+
+    // -------------------------------------------------------------
+    // 1. HEADER & MENUS
+    // -------------------------------------------------------------
     document.addEventListener('DOMContentLoaded', () => {
-      
       const header = document.getElementById('main-header');
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
       const menuIcon = document.getElementById('menu-icon');
 
-      // 1. Efeito do Header no Scroll
+      // Efeito do Header no Scroll
       window.addEventListener('scroll', () => {
         if (window.scrollY > 40) {
-          // Ativa o visual de vidro fosco com borda sutil ao rolar a página
-          header.classList.add('bg-obsidian/85', 'backdrop-blur-md', 'border-obsidian-accent');
+          header.classList.add('bg-obsidian/90', 'backdrop-blur-md', 'border-obsidian-accent');
           header.classList.remove('border-transparent');
+          // Diminui o deslocamento da barra de promoção ao rolar
+          header.style.top = '0px';
         } else {
-          // Restaura a transparência absoluta no topo
-          header.classList.remove('bg-obsidian/85', 'backdrop-blur-md', 'border-obsidian-accent');
+          header.classList.remove('bg-obsidian/90', 'backdrop-blur-md', 'border-obsidian-accent');
           header.classList.add('border-transparent');
+          header.style.top = '40px';
         }
       });
 
-      // 2. Comportamento do Menu Mobile
+      // Comportamento do Menu Mobile
       mobileMenuBtn.addEventListener('click', () => {
         const isClosed = mobileMenu.classList.contains('hidden');
-
         if (isClosed) {
-          // Abre o menu
           mobileMenu.classList.remove('hidden');
-          // Altera o ícone para um 'X' (fechar)
           menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
         } else {
-          // Fecha o menu
           mobileMenu.classList.add('hidden');
-          // Restaura o ícone para as 'Três Barras' (hambúrguer)
           menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
         }
       });
 
-      // 3. Fechar menu mobile ao clicar em um link âncora
+      // Fechar menu mobile ao clicar em um link âncora
       const mobileLinks = mobileMenu.querySelectorAll('a');
       mobileLinks.forEach(link => {
         link.addEventListener('click', () => {
@@ -726,7 +1263,421 @@
         });
       });
 
+      // -------------------------------------------------------------
+      // 2. CRONÔMETRO REGRESSIVO (15 minutos reincidentes)
+      // -------------------------------------------------------------
+      const countdownElement = document.getElementById('countdown');
+      let timeLimit = 15 * 60; // 15 minutos em segundos
+
+      const updateCountdown = () => {
+        let minutes = Math.floor(timeLimit / 60);
+        let seconds = timeLimit % 60;
+        countdownElement.innerText = 
+          `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLimit <= 0) {
+          timeLimit = 15 * 60; // Reseta a contagem
+        } else {
+          timeLimit--;
+        }
+      };
+      
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // -------------------------------------------------------------
+      // 3. SIMULADOR DE ECONOMIA
+      // -------------------------------------------------------------
+      const slider = document.getElementById('perfume-slider');
+      const sliderVal = document.getElementById('slider-val');
+      const costBottles = document.getElementById('cost-bottles');
+      const costSamples = document.getElementById('cost-samples');
+      const costSaved = document.getElementById('cost-saved');
+
+      const updateCalculations = () => {
+        const qty = parseInt(slider.value);
+        sliderVal.innerText = qty;
+
+        const valBottles = qty * 2500;
+        const valSamples = qty * 179.90;
+        const valSaved = valBottles - valSamples;
+
+        costBottles.innerText = `R$ ${valBottles.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        costSamples.innerText = `R$ ${valSamples.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        costSaved.innerText = `R$ ${valSaved.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      };
+
+      slider.addEventListener('input', updateCalculations);
+      updateCalculations();
+
+      // -------------------------------------------------------------
+      // 4. SISTEMA DE CAPTURA / DESCONTO (Exit Intent & Delay)
+      // -------------------------------------------------------------
+      // Exibição após 8 segundos
+      setTimeout(() => {
+        if (!localStorage.getItem('discount_modal_shown')) {
+          showDiscountModal();
+        }
+      }, 8000);
+
+      // Gatilho de Intenção de Saída (Exit Intent)
+      document.addEventListener('mouseleave', (e) => {
+        if (e.clientY < 20) { // Cursor saiu pela borda superior
+          if (!localStorage.getItem('discount_modal_shown')) {
+            showDiscountModal();
+          }
+        }
+      });
+
+      // -------------------------------------------------------------
+      // 5. TOASTS DE PROVA SOCIAL (Loop a cada 15 segundos)
+      // -------------------------------------------------------------
+      const toastContainer = document.getElementById('toast-container');
+      const toastText = document.getElementById('toast-text');
+      
+      const names = ['Camila', 'Rodrigo', 'Beatriz', 'Lucas', 'Ana Flávia', 'Gustavo', 'Júlia', 'Marcelo'];
+      const cities = ['Curitiba', 'São Paulo', 'Belo Horizonte', 'Porto Alegre', 'Rio de Janeiro', 'Brasília', 'Salvador'];
+      const perfumes = ['Rouge N° 540', 'Noir Wood', 'Sweet Tobacco'];
+      
+      const showRandomToast = () => {
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        const randomCity = cities[Math.floor(Math.random() * cities.length)];
+        const randomPerfume = perfumes[Math.floor(Math.random() * perfumes.length)];
+        
+        toastText.innerHTML = `<strong>${randomName} de ${randomCity}</strong> comprou a amostra <strong>${randomPerfume} (10ml)</strong>`;
+        
+        // Exibe o Toast
+        toastContainer.classList.remove('translate-y-12', 'opacity-0', 'pointer-events-none');
+        toastContainer.classList.add('translate-y-0', 'opacity-100');
+        
+        // Esconde após 5 segundos
+        setTimeout(hideToast, 5000);
+      };
+
+      setInterval(showRandomToast, 16000);
+      // Primeiro disparo em 12 segundos
+      setTimeout(showRandomToast, 12000);
+
     });
+
+    const showDiscountModal = () => {
+      document.getElementById('discount-modal').classList.remove('hidden');
+      document.getElementById('discount-modal').classList.add('flex');
+    };
+
+    const closeDiscountModal = () => {
+      document.getElementById('discount-modal').classList.add('hidden');
+      document.getElementById('discount-modal').classList.remove('flex');
+      localStorage.setItem('discount_modal_shown', 'true');
+    };
+
+    const applyDiscountCoupon = () => {
+      // Copiar código do cupom para área de transferência
+      navigator.clipboard.writeText('AMOSTRA10').then(() => {
+        alert('Cupom AMOSTRA10 copiado com sucesso! 10% de desconto ativado.');
+        closeDiscountModal();
+      });
+    };
+
+    const hideToast = () => {
+      const toastContainer = document.getElementById('toast-container');
+      toastContainer.classList.add('translate-y-12', 'opacity-0', 'pointer-events-none');
+      toastContainer.classList.remove('translate-y-0', 'opacity-100');
+    };
+
+    // -------------------------------------------------------------
+    // 6. CARRINHO DE COMPRAS (SACOLA LATERAL)
+    // -------------------------------------------------------------
+    const toggleCart = (open) => {
+      const cartDrawer = document.getElementById('cart-drawer');
+      const cartOverlay = document.getElementById('cart-overlay');
+      
+      if (open) {
+        cartDrawer.classList.remove('translate-x-full');
+        cartOverlay.classList.remove('hidden');
+        renderCart();
+      } else {
+        cartDrawer.classList.add('translate-x-full');
+        cartOverlay.classList.add('hidden');
+      }
+    };
+
+    const addToCart = (id, name, price, img) => {
+      const existingProduct = cart.find(item => item.id === id);
+      
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        cart.push({ id, name, price, img, quantity: 1 });
+      }
+      
+      updateCartCount();
+      toggleCart(true);
+    };
+
+    const changeQuantity = (id, change) => {
+      const product = cart.find(item => item.id === id);
+      if (product) {
+        product.quantity += change;
+        if (product.quantity <= 0) {
+          cart = cart.filter(item => item.id !== id);
+        }
+      }
+      updateCartCount();
+      renderCart();
+    };
+
+    const updateCartCount = () => {
+      const badge = document.getElementById('cart-badge');
+      const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+      
+      if (totalItems > 0) {
+        badge.innerText = totalItems;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    };
+
+    const renderCart = () => {
+      const container = document.getElementById('cart-items-container');
+      const subtotalElement = document.getElementById('cart-subtotal');
+      const shippingElement = document.getElementById('cart-shipping');
+      const totalElement = document.getElementById('cart-total');
+      
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-champagne-muted font-light space-y-3">
+            <p>Sua sacola de decantes está vazia.</p>
+            <button onclick="toggleCart(false)" class="text-xs text-accentgold underline uppercase tracking-wider font-semibold">Explorar Coleção</button>
+          </div>
+        `;
+        subtotalElement.innerText = 'R$ 0,00';
+        shippingElement.innerText = 'Calculando...';
+        totalElement.innerText = 'R$ 0,00';
+        return;
+      }
+
+      let subtotal = 0;
+      container.innerHTML = '';
+      
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        
+        container.innerHTML += `
+          <div class="flex items-center space-x-4 border-b border-obsidian-accent/30 pb-4">
+            <!-- Capa do perfume/placeholder -->
+            <div class="w-16 h-20 bg-obsidian flex items-center justify-center border border-obsidian-accent shrink-0 relative overflow-hidden">
+              <span class="text-[8px] text-accentgold/70 text-center font-mono p-1 leading-none break-all">${item.img}</span>
+            </div>
+            
+            <!-- Descrição e ações -->
+            <div class="flex-1 space-y-1">
+              <div class="flex justify-between items-start">
+                <h4 class="font-serif text-sm text-champagne">${item.name}</h4>
+                <button onclick="changeQuantity(${item.id}, -${item.quantity})" class="text-[10px] text-red-400 hover:text-red-500 uppercase font-semibold">remover</button>
+              </div>
+              <p class="text-xs text-accentgold font-medium">10ml — Amostra</p>
+              
+              <!-- Seletor de quantidade -->
+              <div class="flex justify-between items-center pt-1.5">
+                <div class="flex items-center space-x-2 border border-obsidian-accent bg-obsidian px-2 py-0.5">
+                  <button onclick="changeQuantity(${item.id}, -1)" class="text-champagne-muted hover:text-champagne font-bold text-sm">-</button>
+                  <span class="text-xs text-champagne font-semibold font-mono w-4 text-center">${item.quantity}</span>
+                  <button onclick="changeQuantity(${item.id}, 1)" class="text-champagne-muted hover:text-champagne font-bold text-sm">+</button>
+                </div>
+                <span class="text-xs font-semibold text-champagne">R$ ${(item.price * item.quantity).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      // Cálculo de frete grátis
+      const shipping = subtotal >= 199 ? 0 : 15.00;
+      const total = subtotal + shipping;
+
+      subtotalElement.innerText = `R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      shippingElement.innerText = shipping === 0 ? 'GRÁTIS' : `R$ ${shipping.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      if (shipping === 0) {
+        shippingElement.classList.add('text-accentgold');
+      } else {
+        shippingElement.classList.remove('text-accentgold');
+      }
+      totalElement.innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    };
+
+    const checkoutWhatsApp = () => {
+      if (cart.length === 0) {
+        alert('Adicione pelo menos uma amostra ao carrinho!');
+        return;
+      }
+      
+      let text = 'Olá! Gostaria de fazer o pedido das seguintes amostras:\n\n';
+      let subtotal = 0;
+      
+      cart.forEach(item => {
+        text += `- ${item.quantity}x ${item.name} (10ml) — R$ ${(item.price * item.quantity).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+        subtotal += item.price * item.quantity;
+      });
+
+      const shipping = subtotal >= 199 ? 0 : 15.00;
+      const total = subtotal + shipping;
+
+      text += `\nSubtotal: R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      text += `\nFrete: ${shipping === 0 ? 'GRÁTIS' : `R$ ${shipping.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}`;
+      text += `\nTotal do Pedido: R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}🎉`;
+
+      const encodedText = encodeURIComponent(text);
+      const url = `https://wa.me/5599999999999?text=${encodedText}`;
+      
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    // -------------------------------------------------------------
+    // 7. QUIZ / FINDER DE PERFUME IDEAL
+    // -------------------------------------------------------------
+    const openQuiz = () => {
+      document.getElementById('quiz-modal').classList.remove('hidden');
+      document.getElementById('quiz-modal').classList.add('flex');
+      resetQuiz();
+    };
+
+    const closeQuiz = () => {
+      document.getElementById('quiz-modal').classList.add('hidden');
+      document.getElementById('quiz-modal').classList.remove('flex');
+    };
+
+    const resetQuiz = () => {
+      currentQuizStep = 1;
+      quizAnswers = {};
+      document.getElementById('quiz-progress').style.width = '33%';
+      
+      document.getElementById('quiz-step-1').classList.remove('hidden');
+      document.getElementById('quiz-step-2').classList.add('hidden');
+      document.getElementById('quiz-step-3').classList.add('hidden');
+      document.getElementById('quiz-result').classList.add('hidden');
+    };
+
+    const selectQuizAnswer = (step, value) => {
+      quizAnswers[`step${step}`] = value;
+      
+      if (step === 1) {
+        currentQuizStep = 2;
+        document.getElementById('quiz-progress').style.width = '66%';
+        document.getElementById('quiz-step-1').classList.add('hidden');
+        document.getElementById('quiz-step-2').classList.remove('hidden');
+      } else if (step === 2) {
+        currentQuizStep = 3;
+        document.getElementById('quiz-progress').style.width = '100%';
+        document.getElementById('quiz-step-2').classList.add('hidden');
+        document.getElementById('quiz-step-3').classList.remove('hidden');
+      } else if (step === 3) {
+        showQuizResult();
+      }
+    };
+
+    const showQuizResult = () => {
+      document.getElementById('quiz-step-3').classList.add('hidden');
+      document.getElementById('quiz-result').classList.remove('hidden');
+      
+      // Lógica de Recomendação de Perfume
+      let recKey = 'rouge'; // Padrão
+      
+      const occasion = quizAnswers.step1;
+      const intensity = quizAnswers.step2;
+      const aroma = quizAnswers.step3;
+
+      if (aroma === 'madeira' || occasion === 'negocios') {
+        recKey = 'wood';
+      } else if (aroma === 'doce' && intensity === 'intenso') {
+        recKey = 'tobacco';
+      } else if (intensity === 'suave') {
+        recKey = 'rouge'; // Supondo Rouge para perfil luminoso leve
+      }
+
+      const recommendation = productsCatalog[recKey];
+      
+      document.getElementById('quiz-result-title').innerText = recommendation.name;
+      document.getElementById('quiz-result-desc').innerText = recommendation.desc;
+      document.getElementById('quiz-result-family').innerText = recommendation.family;
+      document.getElementById('quiz-result-price').innerText = `R$ ${recommendation.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      document.getElementById('quiz-result-img').innerText = recommendation.img;
+
+      // Botão Adicionar do Resultado
+      const addBtn = document.getElementById('quiz-add-btn');
+      addBtn.onclick = () => {
+        addToCart(recommendation.id, recommendation.name, recommendation.price, recommendation.img);
+        closeQuiz();
+      };
+    };
+
+    // -------------------------------------------------------------
+    // 8. PIRÂMIDE OLFATIVA INTERATIVA
+    // -------------------------------------------------------------
+    const selectPyramidLayer = (layerName) => {
+      const layers = ['topo', 'coracao', 'fundo'];
+      
+      layers.forEach(layer => {
+        const element = document.getElementById(`layer-${layer}`);
+        const desc = document.getElementById(`desc-${layer}`);
+        const leftIndicator = element.querySelector('.absolute');
+        const arrow = element.querySelector('svg');
+        
+        if (layer === layerName) {
+          desc.classList.remove('hidden');
+          leftIndicator.classList.remove('bg-transparent');
+          leftIndicator.classList.add('bg-accentgold');
+          arrow.classList.add('rotate-180');
+        } else {
+          desc.classList.add('hidden');
+          leftIndicator.classList.remove('bg-accentgold');
+          leftIndicator.classList.add('bg-transparent');
+          arrow.classList.remove('rotate-180');
+        }
+      });
+    };
+
+    // -------------------------------------------------------------
+    // 9. CARROSSEL DE DEPOIMENTOS (SLIDER)
+    // -------------------------------------------------------------
+    const showSlide = (index) => {
+      // Oculta todos os slides
+      for (let i = 0; i < totalTestimonials; i++) {
+        const slide = document.getElementById(`slide-${i}`);
+        const bullet = document.getElementById(`bullet-${i}`);
+        
+        if (i === index) {
+          slide.classList.remove('hidden', 'opacity-0');
+          slide.classList.add('block', 'opacity-100');
+          bullet.classList.remove('bg-accentgold/30');
+          bullet.classList.add('bg-accentgold');
+        } else {
+          slide.classList.add('hidden', 'opacity-0');
+          slide.classList.remove('block', 'opacity-100');
+          bullet.classList.add('bg-accentgold/30');
+          bullet.classList.remove('bg-accentgold');
+        }
+      }
+      currentTestimonialIndex = index;
+    };
+
+    const nextSlide = () => {
+      let index = currentTestimonialIndex + 1;
+      if (index >= totalTestimonials) {
+        index = 0;
+      }
+      showSlide(index);
+    };
+
+    const prevSlide = () => {
+      let index = currentTestimonialIndex - 1;
+      if (index < 0) {
+        index = totalTestimonials - 1;
+      }
+      showSlide(index);
+    };
+
   </script>
 
 </body>
